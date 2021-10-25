@@ -2,6 +2,7 @@
 package petstore;
 
 //2 - Bibliotecas
+
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 
 //3- Classe
 public class Pet {
@@ -29,6 +31,7 @@ public class Pet {
         //Dado _Quando - Então
         //Given - When - Then
 
+        // rest-assured
         given() // Dado
                 .contentType("application/json") // comum em API REST - antigos eram "text/xml"
                 .log().all()
@@ -38,6 +41,9 @@ public class Pet {
         .then() //Então
                 .log().all()
                 .statusCode(200)
+                .body("name", is("Chocolate"))
+                .body("status", is("available"))
+
         ;
 
     }
