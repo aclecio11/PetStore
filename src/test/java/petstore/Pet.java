@@ -50,6 +50,25 @@ public class Pet {
         ;
 
     }
+    @Test
+    public void consultarPet() {
+         String petId = "1990040331";
 
+        // rest-assured
+        given() // Dado
+                .contentType("application/json") // comum em API REST - antigos eram "text/xml"
+                .log().all()
+        .when() //Quando
+                .get(uri + "/" + petId)
+        .then()
+                .log().all()
+                .statusCode(200)
+                .body("name", is("Chocolate"))
+                .body("status", is("available"))
+                .body("category.name", is("dog"))
+                .body("tags.name", contains("sta"))
+        ;
+
+    }
 
 }
