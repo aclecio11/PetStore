@@ -24,7 +24,7 @@ public class Pet {
     }
 
     //Incluir - Create - Post
-    @Test  // identifica o método ou função como um teste para o testNG
+    @Test (priority = 1) // identifica o método ou função como um teste para o testNG
     public void incluirPet() throws IOException {
         String jsonBody = lerJson("db/pet1.json");
 
@@ -46,12 +46,11 @@ public class Pet {
                 .body("status", is("available"))
                 .body("category.name", is("dog"))
                 .body("tags.name", contains("sta"))
-
         ;
 
     }
-    @Test
-    public void consultarPet() {
+    @Test (priority = 2)
+    public void consultarPet()  {
          String petId = "1990040331";
 
         // rest-assured
@@ -68,7 +67,30 @@ public class Pet {
                 .body("category.name", is("dog"))
                 .body("tags.name", contains("sta"))
         ;
+    }
 
+    @Test (priority = 3)
+    public void alterarPet() throws IOException {
+        String jsonBody = lerJson("db/pet2.json");
+
+        //Sintaxe Gherkin
+        //Dado _Quando - Então
+        //Given - When - Then
+
+        // rest-assured
+        given() // Dado
+                .contentType("application/json") // comum em API REST - antigos eram "text/xml"
+                .log().all()
+                .body(jsonBody)
+        .when() //Quando
+                .put(uri)
+        .then() //Então
+                .log().all()
+                .statusCode(200)
+                .body("name", is("Chocolate"))
+                .body("status", is("sold"))
+                .body("category.name", is("dog"))
+        ;
     }
 
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="petstore.Pet" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-10-26T00:07:32" hostname="ACLECIO" time="12.222">
+<testsuite name="petstore.Pet" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-10-27T21:22:18" hostname="ACLECIO" time="11.814">
   <properties/>
-  <testcase name="consultarPet" classname="petstore.Pet" time="12.222"/>
-  <system-out><![CDATA[Request method:	GET
-Request URI:	https://petstore.swagger.io/v2/pet/1990040331
+  <testcase name="alterarPet" classname="petstore.Pet" time="11.814"/>
+  <system-out><![CDATA[Request method:	PUT
+Request URI:	https://petstore.swagger.io/v2/pet
 Proxy:			<none>
 Request params:	<none>
 Query params:	<none>
@@ -13,9 +13,27 @@ Headers:		Accept=*/*
 				Content-Type=application/json; charset=UTF-8
 Cookies:		<none>
 Multiparts:		<none>
-Body:			<none>
+Body:
+{
+    "id": 1990040331,
+    "category": {
+        "id": 1,
+        "name": "dog"
+    },
+    "name": "Chocolate",
+    "photoUrls": [
+        "string"
+    ],
+    "tags": [
+        {
+            "id": 2021,
+            "name": "sta"
+        }
+    ],
+    "status": "sold"
+}
 HTTP/1.1 200 OK
-Date: Tue, 26 Oct 2021 00:07:41 GMT
+Date: Wed, 27 Oct 2021 21:22:26 GMT
 Content-Type: application/json
 Transfer-Encoding: chunked
 Connection: keep-alive
@@ -40,7 +58,7 @@ Server: Jetty(9.2.9.v20150224)
             "name": "sta"
         }
     ],
-    "status": "available"
+    "status": "sold"
 }
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
