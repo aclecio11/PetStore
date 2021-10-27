@@ -108,7 +108,7 @@ public class Pet {
                 .statusCode(200)
                 .body("code", is(200))
                 .body("type", is("unknown"))
-                .body("message", is("1990040331"))
+                .body("message", is(petId))
         ;
 
 
