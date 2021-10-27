@@ -93,4 +93,25 @@ public class Pet {
         ;
     }
 
+    @Test (priority = 4)
+    public void excluirPet() {
+        String petId = "1990040331";
+
+        // rest-assured
+        given() // Dado
+                .contentType("application/json") // comum em API REST - antigos eram "text/xml"
+                .log().all()
+        .when() //Quando
+                .delete(uri + "/" + petId)
+        .then()
+                .log().all()
+                .statusCode(200)
+                .body("code", is(200))
+                .body("type", is("unknown"))
+                .body("message", is("1990040331"))
+        ;
+
+
+    }
+
 }
