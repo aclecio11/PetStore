@@ -24,7 +24,7 @@ public class Pet {
     }
 
     //Incluir - Create - Post
-    @Test (priority = 1) // identifica o método ou função como um teste para o testNG
+    @Test(priority = 1) // identifica o método ou função como um teste para o testNG
     public void incluirPet() throws IOException {
         String jsonBody = lerJson("db/pet1.json");
 
@@ -49,9 +49,10 @@ public class Pet {
         ;
 
     }
-    @Test (priority = 2)
-    public void consultarPet()  {
-         String petId = "1990040331";
+
+    @Test(priority = 2)
+    public void consultarPet() {
+        String petId = "1990040331";
 
         // rest-assured
         given() // Dado
@@ -69,7 +70,7 @@ public class Pet {
         ;
     }
 
-    @Test (priority = 3)
+    @Test(priority = 3)
     public void alterarPet() throws IOException {
         String jsonBody = lerJson("db/pet2.json");
 
@@ -93,7 +94,7 @@ public class Pet {
         ;
     }
 
-    @Test (priority = 4)
+    @Test(priority = 4)
     public void excluirPet() {
         String petId = "1990040331";
 
@@ -111,6 +112,24 @@ public class Pet {
                 .body("message", is(petId))
         ;
 
+
+    }
+
+    @Test (priority = 5)
+    public void consultarPetPorStatus() {
+        String petStatus = "available";
+
+        // rest-assured
+        given() // Dado
+                .contentType("application/json") // comum em API REST - antigos eram "text/xml"
+                .log().all()
+        .when() //Quando
+                .get(uri + "/findByStatus?status=available" + petStatus)
+        .then()
+                .log().all()
+                .statusCode(200)
+               // .body("name", contains("[\"Chocolate\"]"))
+        ;
 
     }
 
