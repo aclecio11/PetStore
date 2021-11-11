@@ -1,10 +1,10 @@
 package petstore;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utils.Data;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,16 +12,17 @@ import static org.hamcrest.CoreMatchers.is;
 public class User {
     //3.1 - Atributos
     String uri = "https://petstore.swagger.io/v2/user"; // endereçe da entidade User
+    Data data;
 
-    //3.2 - Métodos e funções
-    public String lerJson(String caminhoJson) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(caminhoJson)));
+    @BeforeMethod
+    public void setup() {
+        data = new Data();
     }
 
     //Incluir - Create - Post
     @Test(priority = 1) // identifica o método ou função como um teste para o testNG
     public void incluirUsuario() throws IOException {
-        String jsonBody = lerJson("db/user1.json");
+        String jsonBody = data.lerJson("db/user1.json");
 
         String userId =
         given() // Dado
@@ -42,7 +43,6 @@ public class User {
         System.out.println("O userId é "+ userId);
 
     }
-
 
 
 }
