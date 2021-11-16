@@ -1,7 +1,8 @@
 package datadriven;
 
 
-import org.testng.annotations.BeforeMethod;
+import org.json.JSONObject;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import utils.Data;
@@ -27,10 +28,14 @@ public class UserDD {
 
     @DataProvider
     public Iterator<Object[]> provider() throws IOException {
-
         List<Object[]> testCases = new ArrayList<>();
-        String[] testCase ;
-        String linha ;
+        //List<String[]> testCases = new ArrayList<>();
+        String[] testCase;
+        String linha;
+
+        //List<Object[]> testCases = new ArrayList<>();
+       // String[] testCase ;
+      //  String linha ;
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader("db/users.csv"));
         while((linha = bufferedReader.readLine()) != null) {
@@ -43,15 +48,33 @@ public class UserDD {
     }
 
 
-    @BeforeMethod
+    @BeforeClass
     public void setup() {
         data = new Data();
+
     }
 
     //Incluir - Create - Post
-    @Test(priority = 1) // identifica o método ou função como um teste para o testNG
-    public void incluirUsuario() throws IOException {
-        String jsonBody = data.lerJson("db/user1.json");
+    @Test(dataProvider  = "provider") // identifica o método ou função como um teste para o testNG
+    public void incluirUsuario(
+                               String id,
+                               String username,
+                               String firstName,
+                               String lastName,
+                               String email,
+                               String password,
+                               String phone,
+                               String userStatus) throws IOException {
+        String jsonBody = new JSONObject()
+                .put("id", id)
+                .put("username" ,username)
+                .put("firstName", firstName)
+                .put("lastName", lastName)
+                .put("email", email)
+                .put("password", password)
+                .put("phone", phone)
+                .put("userStatus", userStatus)
+                .toString();
 
         String userId =
                 given() // Dado
