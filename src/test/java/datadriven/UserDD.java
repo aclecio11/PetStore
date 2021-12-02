@@ -2,10 +2,9 @@ package datadriven;
 
 
 import org.json.JSONObject;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import utils.Data;
+import utils.Log;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,10 +20,13 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class UserDD {
     //3.1 - Atributos
-    String uri = "https://petstore.swagger.io/v2/user"; // endereÃ§e da entidade User
+    String uri = "https://petstore.swagger.io/v2/user"; // endereçe da entidade User
     Data data;  //objeto que representa a classe utils.Data
+    Log log;  //Objeto que representa classe utils.log
+    int contador;      //Ajuda a contar o numero de linhas executadas
+    double soma;  // Somar os valores das senhas(brincadeira com as senhas)
 
-    //3.2 - MÃ©todos e funÃ§Ãµes
+    //3.2 - Métodos e funções
 
     @DataProvider
     public Iterator<Object[]> provider() throws IOException {
@@ -37,7 +39,7 @@ public class UserDD {
        // String[] testCase ;
       //  String linha ;
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("db/users.csv"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("db/usersPairwise.csv"));
         while((linha = bufferedReader.readLine()) != null) {
 
             testCase = linha.split(",");
@@ -48,14 +50,20 @@ public class UserDD {
     }
 
 
-    @BeforeClass
-    public void setup() {
+    @BeforeClass // Antes da classe que executa os testes
+    public void setup() throws IOException {
         data = new Data();
+        log = new Log();
 
+        log.iniciarLog(); // Criar o arquivo e escrever a linha de cabecalho
     }
 
+    @AfterClass  //Depois que a classe terminar de executar todos os seus testes
+    public void tearDown() {
+        System.out.println("TOTAL DE REGISTROS = "+ contador); }
+
     //Incluir - Create - Post
-    @Test(dataProvider  = "provider") // identifica o mÃ©todo ou funÃ§Ã£o como um teste para o testNG
+    @Test(dataProvider  = "provider") // identifica o método ou função como um teste para o testNG
     public void incluirUsuario(
                                String id,
                                String username,
@@ -65,6 +73,8 @@ public class UserDD {
                                String password,
                                String phone,
                                String userStatus) throws IOException {
+
+
         String jsonBody = new JSONObject()
                 .put("id", id)
                 .put("username" ,username)
@@ -76,14 +86,14 @@ public class UserDD {
                 .put("userStatus", userStatus)
                 .toString();
 
-        String userId =
+        String userId =                     //Extraindo token
                 given() // Dado
                         .contentType("application/json") // comum em API REST - antigos eram "text/xml"
                         .log().all()
                         .body(jsonBody)
                 .when() //Quando
                         .post(uri)
-                .then() //EntÃ£o
+                .then() //Então
                         .log().all()
                         .statusCode(200)
                         .body("code", is(200))
@@ -92,7 +102,12 @@ public class UserDD {
                         .path("message")
                 ;
 
-        System.out.println("O userId Ã© "+ userId);
+        contador += 1; // Contador sempre é += ou ++
+        System.out.println("O userId é "+ userId); //Extraindo token
+        System.out.println("Essa é a linha nº " + contador);
+
+        soma = soma + Double.parseDouble(password);  //convertendo password para double
+        System.out.println("SOMA TOTAL = "+soma);
 
     }
 
